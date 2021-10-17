@@ -1,20 +1,23 @@
 const main = async() => {
   const [owner, randomPerson] = await hre.ethers.getSigners();
-  const consoleAppContractFactory = await hre.ethers.getContractFactory("ConsoleApp")
-  const consoleContract = await consoleAppContractFactory.deploy()
-  await consoleContract.deployed()
+  const begContractContractFactory = await hre.ethers.getContractFactory("BegContract")
+  const begContract = await begContractContractFactory.deploy()
+  await begContract.deployed()
 
-  console.log("Deployed to "+ consoleContract.address+"\n")
+  console.log("Deployed to "+ begContract.address+"\n")
   console.log("Contract deployed by:", owner.address);
 
   for(i=0; i<5; i++){
-    await consoleContract.increment()
+    await begContract.increment()
   }
 
   console.log("Enter random person")
 
-  let consoleTxn = await consoleContract.connect(randomPerson).increment();
-  await consoleTxn.wait();
+  let begTxn = await begContract.connect(randomPerson).increment();
+  await begTxn.wait();
+
+  let totalBegs = await begContract.connect(randomPerson).getTotalBegs();
+  console.log("Total begs after execution = ",totalBegs)
 }
 
 const runMain = async () => {
